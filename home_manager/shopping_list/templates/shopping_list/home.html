@@ -1,0 +1,13 @@
+{% extends "shopping_list/base.html" %}
+
+{% block content %}
+    <h1>Shopping List!</h1>
+    <ul>
+    {% for item in shopping_items %}
+        <li>
+            <h3>{{ item.name }}</h3>
+            <p>Added by <b>{{ item.author }}</b> on {{ item.created }}</p>
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock content %}
