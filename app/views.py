@@ -27,12 +27,12 @@ def home(req):
         'title': 'Shopping List',
         'shopping_items': GroceryItem.objects.order_by('is_checked', 'name')
     })
-    return render(req, 'shopping_list/home.html', ctx)
+    return render(req, 'app/home.html', ctx)
 
 
 def about(req):
     ctx = get_date_time_ctx()
-    return render(req, 'shopping_list/about.html', ctx)
+    return render(req, 'app/about.html', ctx)
 
 
 

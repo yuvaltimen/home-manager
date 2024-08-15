@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'shopping_list.apps.ShoppingListConfig',
+    'app.apps.ShoppingListConfig',
     'users.apps.UsersConfig',
     'crispy_forms',
     'crispy_bootstrap5',
@@ -129,4 +129,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
-LOGIN_REDIRECT_URL = 'shopping_list_home'
+LOGIN_REDIRECT_URL = 'app_home'
