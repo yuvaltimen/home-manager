@@ -1,28 +1,11 @@
 from django.shortcuts import render
-
-shopping = [
-    {
-        "name": "Cottage cheese",
-        "author": "Adi",
-        "created": "Aug. 12, 2024"
-    },
-    {
-        "name": "Yogurt",
-        "author": "Adi",
-        "created": "Aug. 12, 2024"
-    },
-    {
-        "name": "Matza",
-        "author": "Yuval",
-        "created": "Aug. 13, 2024"
-    }
-]
+from .models import GroceryItem
 
 
 def home(req):
     ctx = {
         'title': 'Shopping List',
-        'shopping_items': shopping
+        'shopping_items': GroceryItem.objects.all()
     }
     return render(req, 'shopping_list/home.html', ctx)
 

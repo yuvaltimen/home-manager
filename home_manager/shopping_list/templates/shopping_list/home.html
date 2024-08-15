@@ -6,7 +6,7 @@
     {% for item in shopping_items %}
         <li>
             <h3>{{ item.name }}</h3>
-            <p>Added by <b>{{ item.author }}</b> on {{ item.created }}</p>
+            <p class="text-muted">Added by <b>{{ item.author }}</b> on {{ item.last_modified | date:"m/d/Y (H:i)" }}</p>
         </li>
     {% endfor %}
     </ul>
