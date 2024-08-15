@@ -18,7 +18,7 @@ ctx = {
 def home(req):
     ctx.update({
         'title': 'Shopping List',
-        'shopping_items': GroceryItem.objects.all()
+        'shopping_items': GroceryItem.objects.order_by('is_checked', 'name')
     })
     return render(req, 'shopping_list/home.html', ctx)
 
