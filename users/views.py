@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth import logout
 from .forms import UserRegisterForm
 
 
@@ -9,9 +10,15 @@ def register(req):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            messages.success(req, f"Account created for {username}")
-            return redirect('shopping_list_home')
+            messages.success(req, f"Account created for user: {username}")
+            return redirect('login')
     else:
         form = UserRegisterForm()
     return render(req, 'users/register.html', {'form': form})
+
+
+def logout_view(req):
+    logout(req)
+    return render(req, 'users/logout.html')
+
 
