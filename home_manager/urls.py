@@ -16,8 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.urls import path, include
+from django.views.i18n import JavaScriptCatalog
+from django.urls import path, re_path, include
 from users import views as user_views
+
+js_info_dict = {
+    'packages': ('recurrence', ),
+}
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +30,5 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path("logout/", user_views.logout_view, name="logout"),
     path('', include('app.urls')),
+    re_path(r'^jsi18n/$', JavaScriptCatalog.as_view(), js_info_dict),
 ]

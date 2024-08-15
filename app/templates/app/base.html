@@ -31,8 +31,8 @@
             <div class="collapse navbar-collapse justify-content-between" id="navbarToggle">
                 <!-- Navbar Left Side -->
                 <div class="navbar-nav">
-                    <a class="nav-item nav-link" href="{% url 'app_home' %}">Home</a>
-                    <a class="nav-item nav-link" href="{% url 'app_about' %}">About</a>
+                    <a class="nav-item nav-link" href="{% url 'app_today' %}">Today</a>
+                    <a class="nav-item nav-link" href="{% url 'app_shopping_list' %}">Shopping List</a>
                 </div>
                 <!-- Navbar Right Side -->
                 {% if user.is_authenticated %}

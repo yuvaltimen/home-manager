@@ -5,7 +5,7 @@ from pyluach.dates import HebrewDate
 from pyluach import parshios
 
 from django.shortcuts import render
-from .models import GroceryItem
+from .models import GroceryItem, Reminder
 
 
 def get_date_time_ctx():
@@ -23,17 +23,21 @@ def get_date_time_ctx():
 
 def home(req):
     ctx = get_date_time_ctx()
-    ctx.update({
-        'title': 'Shopping List',
+    return render(req, 'app/today.html', ctx)
+
+
+def shopping_list(req):
+    ctx = {
         'shopping_items': GroceryItem.objects.order_by('is_checked', 'name')
-    })
-    return render(req, 'app/home.html', ctx)
+    }
+    return render(req, 'app/shopping_list.html', ctx)
 
 
-def about(req):
-    ctx = get_date_time_ctx()
-    return render(req, 'app/about.html', ctx)
-
+def reminders(req):
+    ctx = {
+        'reminders': Reminder.objects.all()
+    }
+    return render(req, 'app/reminders.html', ctx)
 
 
 

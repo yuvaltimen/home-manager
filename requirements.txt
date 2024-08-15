@@ -3,3 +3,4 @@ django_crispy_forms==2.3
 crispy-bootstrap5
 pytz
 pyluach
+django-recurrence
