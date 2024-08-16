@@ -4,3 +4,4 @@ crispy-bootstrap5
 pytz
 pyluach
 django-recurrence
+pillow
