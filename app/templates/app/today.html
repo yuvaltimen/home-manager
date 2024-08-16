@@ -7,14 +7,6 @@
     <h3><b>{{ dt | date:"f a" }}</b> on <b>{{ dt | date:"l N jS" }}</b></h3>
     <h4><b>{{ hebrew_dt | date:"jS" }}</b> of <b>{{ hebrew_dt.month_name }}, {{ hebrew_dt.year }}</b> {{ ivrit_day }}</h4>
     <p class="text-muted">Parshat {{ parsha }}</p>
-    <p class='text-muted'>
-    <ul class="list-group">
-        <li class="list-group-item list-group-item-light">Latest Posts</li>
-        <li class="list-group-item list-group-item-light">Announcements</li>
-        <li class="list-group-item list-group-item-light">Calendars</li>
-        <li class="list-group-item list-group-item-light">etc</li>
-    </ul>
-    </p>
 </div>
 
 {% endblock content %}

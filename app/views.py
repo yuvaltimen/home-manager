@@ -1,10 +1,8 @@
 import datetime
-
-import pytz
 from pyluach.dates import HebrewDate
 from pyluach import parshios
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import GroceryItem, Reminder
 
 
@@ -22,6 +20,10 @@ def get_date_time_ctx():
 
 
 def home(req):
+    return redirect(to=today)
+
+
+def today(req):
     ctx = get_date_time_ctx()
     return render(req, 'app/today.html', ctx)
 
