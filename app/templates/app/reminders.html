@@ -6,13 +6,26 @@
     <h1>Set Recurring Reminders</h1>
     <ul>
         {% for item in reminders %}
+        <li>
             <div class="form-check">
                 <h3>{{ item.name }}</h3>
                 <p class="text-muted">Added by <b>{{ item.author }}</b> on {{ item.last_modified | date:"m/d/Y (H:i)" }}</p>
                 <p>{{ item.description }}</p>
-                <h3>{{ item.schedule }}</h3>
-            </div>
+                {% for inc_rule in item.schedule.rrules %}
+                    <p class="text-muted">Occurs {{ inc_rule.to_text }} </p>
+                {% endfor %}
+                {% for exc_rule in item.schedule.exrules %}
+                    <p class="text-muted">except for {{ exc_rule.to_text }}</p>
+                {% endfor %}
+                {% for inc_date in item.schedule.rdates %}
+                    <p class="text-muted">Occurs on date: {{ inc_date }} </p>
+                {% endfor %}
+                {% for exc_date in item.schedule.exdates %}
+                    <p class="text-muted">Except on date: {{ exc_date }} </p>
+                {% endfor %}
 
+            </div>
+        </li>
         {% endfor %}
     </ul>
 </div>
