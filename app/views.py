@@ -43,6 +43,3 @@ def reminders(req):
         'reminders': Reminder.objects.all()
     }
     return render(req, 'app/reminders.html', ctx)
-
-
-

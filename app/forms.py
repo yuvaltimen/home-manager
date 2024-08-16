@@ -2,7 +2,7 @@ from django import forms
 from .models import Reminder
 
 
-class ReminderForm(forms.ModelForm):
+class ReminderUpdateForm(forms.ModelForm):
     class Meta:
         model = Reminder
-        fields = ('title', 'recurrences',)
+        fields = ('name', 'description', 'schedule')

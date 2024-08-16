@@ -1,29 +1,34 @@
 {% extends "app/base.html" %}
 
 {% block content %}
-
 <div class="content-section">
-    <h1>Set Recurring Reminders</h1>
-    <ul>
+    <h1>Reminders</h1>
+    <ul class="list-group">
         {% for item in reminders %}
-        <li>
-            <div class="form-check">
-                <h3>{{ item.name }}</h3>
-                <p class="text-muted">Added by <b>{{ item.author }}</b> on {{ item.last_modified | date:"m/d/Y (H:i)" }}</p>
-                <p>{{ item.description }}</p>
-                {% for inc_rule in item.schedule.rrules %}
+        <li class="list-group-item list-group-item-light">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h3>{{ item.name }}</h3>
+                    <p class="text-muted">
+                        Added by <b>{{ item.author }}</b> on {{ item.last_modified | date:"m/d/Y (H:i)" }}
+                    </p>
+                    <p>{{ item.description }}</p>
+                    {% for inc_rule in item.schedule.rrules %}
                     <p class="text-muted">Occurs {{ inc_rule.to_text }} </p>
-                {% endfor %}
-                {% for exc_rule in item.schedule.exrules %}
+                    {% endfor %}
+                    {% for exc_rule in item.schedule.exrules %}
                     <p class="text-muted">except for {{ exc_rule.to_text }}</p>
-                {% endfor %}
-                {% for inc_date in item.schedule.rdates %}
+                    {% endfor %}
+                    {% for inc_date in item.schedule.rdates %}
                     <p class="text-muted">Occurs on date: {{ inc_date }} </p>
-                {% endfor %}
-                {% for exc_date in item.schedule.exdates %}
+                    {% endfor %}
+                    {% for exc_date in item.schedule.exdates %}
                     <p class="text-muted">Except on date: {{ exc_date }} </p>
-                {% endfor %}
-
+                    {% endfor %}
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                    <a class="btn btn-outline-info" href="{% url 'app_today' %}">Edit</a>
+                </div>
             </div>
         </li>
         {% endfor %}
