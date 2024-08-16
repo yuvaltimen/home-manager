@@ -13,8 +13,10 @@
                 <label class="form-check-label" for="flexCheckDefault">
                     <h3>{{ item.name }}</h3>
                 </label>
-
-            <p class="text-muted">Added by <b>{{ item.author }}</b> on {{ item.last_modified | date:"m/d/Y (H:i)" }}</p>
+            <div class="d-flex p-2 bd-highlight">
+                <img class="rounded-circle" src="{{ item.author.profile.image.url }}" width="30" height="30">
+                <p class="text-muted">Added by <b>{{ item.author }}</b> on {{ item.last_modified | date:"m/d/Y (H:i)" }}</p>
+            </div>
             </div>
 
         {% endfor %}
