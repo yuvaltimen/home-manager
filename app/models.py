@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 from recurrence.fields import RecurrenceField
 
 
@@ -11,6 +12,9 @@ class GroceryItem(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.author}"
+
+    def get_absolute_url(self):
+        return reverse('app_shopping_detail', kwargs={'pk': self.pk})
 
 
 class Reminder(models.Model):
