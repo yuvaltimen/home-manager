@@ -51,8 +51,8 @@ def shopping_list(req):
 
 class GroceryItemListView(LoginRequiredMixin, ListView):
     model = GroceryItem
-    template_name = 'app/shopping_list.html'
-    context_object_name = 'shopping_items'
+    # template_name = 'app/shopping_list.html'
+    # context_object_name = 'shopping_items'
     ordering = ['is_checked', 'name']
 
 

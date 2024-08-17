@@ -14,7 +14,7 @@ class GroceryItem(models.Model):
         return f"{self.name} - {self.author}"
 
     def get_absolute_url(self):
-        return reverse('app_shopping_detail', kwargs={'pk': self.pk})
+        return reverse('app_groceryitem_detail', kwargs={'pk': self.pk})
 
 
 class Reminder(models.Model):
