@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="content-section">
-    <h1>Shopping List</h1>
+    <h1>{{ view.kwargs.username }}'s Shopping List ({{ page_obj.paginator.count }})</h1>
     <ul>
         {% for item in object_list %}
         <h3><a class="article-title" href="{% url 'app_groceryitem_detail' item.id %}">{{ item.name }}</a></h3>

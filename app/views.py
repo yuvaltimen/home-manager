@@ -2,7 +2,7 @@ import datetime
 from pyluach.dates import HebrewDate
 from pyluach import parshios
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import (
     ListView,
     DetailView,
@@ -12,6 +12,7 @@ from django.views.generic import (
 )
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
 from .models import GroceryItem, Reminder
 
 
@@ -51,9 +52,19 @@ def shopping_list(req):
 
 class GroceryItemListView(LoginRequiredMixin, ListView):
     model = GroceryItem
-    # template_name = 'app/shopping_list.html'
-    # context_object_name = 'shopping_items'
     ordering = ['is_checked', 'name']
+    paginate_by = 5
+
+
+class UserGroceryItemListView(LoginRequiredMixin, ListView):
+    model = GroceryItem
+    template_name = 'app/user_groceryitem_list.html'
+    ordering = ['is_checked', 'name']
+    paginate_by = 5
+
+    def get_queryset(self):
+        usr = get_object_or_404(User, username=self.kwargs.get('username'))
+        return GroceryItem.objects.filter(author=usr).order_by('is_checked', 'name')
 
 
 class GroceryItemDetailView(LoginRequiredMixin, DetailView):

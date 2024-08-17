@@ -6,12 +6,14 @@ from .views import (
     GroceryItemCreateView,
     GroceryItemUpdateView,
     GroceryItemDeleteView,
+    UserGroceryItemListView,
 )
 
 
 urlpatterns = [
     path('', views.home, name='app_home'),
     path('today/', views.today, name='app_today'),
+    path('user/<str:username>', UserGroceryItemListView.as_view(), name='app_user_groceryitem_list'),
     path('shopping_list/', GroceryItemListView.as_view(), name='app_groceryitem_list'),
     path('shopping_list/<int:pk>/', GroceryItemDetailView.as_view(), name='app_groceryitem_detail'),
     path('shopping_list/new/', GroceryItemCreateView.as_view(), name='app_groceryitem_create'),
