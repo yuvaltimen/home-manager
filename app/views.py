@@ -45,14 +45,14 @@ def today(req):
 class GroceryItemListView(LoginRequiredMixin, ListView):
     model = GroceryItem
     ordering = ['name', ]
-    paginate_by = 5
+    paginate_by = 50
 
 
 class UserGroceryItemListView(LoginRequiredMixin, ListView):
     model = GroceryItem
     template_name = 'app/user_groceryitem_list.html'
     ordering = ['name', ]
-    paginate_by = 5
+    paginate_by = 50
 
     def get_queryset(self):
         usr = get_object_or_404(User, username=self.kwargs.get('username'))
