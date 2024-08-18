@@ -5,3 +5,4 @@ pytz
 pyluach
 django-recurrence
 pillow
+python-dotenv
