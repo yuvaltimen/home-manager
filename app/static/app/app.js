@@ -21,6 +21,22 @@ function sort_checked() {
       }
 }
 
+function clear_all() {
+    console.log("hit clear");
+    localStorage.clear();
+    location.reload();
+}
+
+function select_all() {
+    console.log("hit select");
+    if (document.getElementById(ul_to_sort_name)) {
+        document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox) {
+            localStorage.setItem(checkbox.id, true);
+        });
+    }
+    location.reload();
+}
+
 document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox) {
     checkbox.addEventListener('change', function() {
         localStorage.setItem(checkbox.id, checkbox.checked);
