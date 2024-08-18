@@ -1,12 +1,24 @@
 {% extends "app/base.html" %}
+{% load extra_tags %}
+{% load static %}
 
 {% block content %}
 
 <h3>Today</h3>
 <div class="content-section">
-    <h3><b>{{ dt | date:"f a" }}</b> on <b>{{ dt | date:"l N jS" }}</b></h3>
-    <h4><b>{{ hebrew_dt | date:"jS" }}</b> of <b>{{ hebrew_dt.month_name }}, {{ hebrew_dt.year }}</b> {{ ivrit_day }}</h4>
-    <p class="text-muted">Parshat {{ parsha }}</p>
+    <div class="d-flex row align-items-center">
+        <h3><b>{{ dt | date:"f a" }}</b> on <b>{{ dt | date:"l N jS" }}</b></h3>
+        <h4><b>{{ hebrew_dt | date:"jS" }}</b> of <b>{{ hebrew_dt.month_name }}, {{ hebrew_dt.year }}</b> {{ ivrit_day }}</h4>
+    </div>
+    <div class="content-section d-flex row">
+        <div class="d-flex align-items-center justify-content-around">
+            <p class="text-muted">Parshat {{ parsha }}</p>
+            <p class="text-muted">Tonight is a  {{ moon_phase | replace_with_space:"_" }}</p>
+        </div>
+        <div class="d-flex align-items-center justify-content-around">
+            <img class="rounded-circle" src="{% static '/moon_phases/'|add:moon_phase|add:'.jpg' %}" width="480" height="480">
+        </div>
+    </div>
 </div>
 
 {% endblock content %}
