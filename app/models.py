@@ -7,7 +7,6 @@ from recurrence.fields import RecurrenceField
 class GroceryItem(models.Model):
     name = models.CharField(max_length=100)
     author = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    is_checked = models.BooleanField(default=False)
     last_modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):

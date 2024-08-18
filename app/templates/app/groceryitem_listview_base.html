@@ -1,0 +1,29 @@
+{% extends "app/base.html" %}
+
+{% block content %}
+<div class="content-section">
+    {% block page_title%}{% endblock %}
+    <ul class="list-group">
+        {% for item in object_list %}
+        <li class="list-group-item list-group-item-light">
+            <div class="form-check">
+                <h3><a class="article-title" href="{% url 'app_groceryitem_detail' item.id %}">{{ item.name }}</a></h3>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                    <div class="d-flex p-2 bd-highlight">
+                        <p class="text-muted">
+                            Added by
+                            <a href="{% url 'app_user_groceryitem_list' item.author %}"><b>{{ item.author }}</b></a>
+                            on {{ item.last_modified | date:"m/d/Y (H:i)" }}
+                        </p>
+                    </div>
+                </label>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% include "app/pagination.html" %}
+
+{% endblock content %}

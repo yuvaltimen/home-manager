@@ -42,29 +42,21 @@ def today(req):
     return render(req, 'app/today.html', ctx)
 
 
-@login_required
-def shopping_list(req):
-    ctx = {
-        'shopping_items': GroceryItem.objects.order_by('is_checked', 'name')
-    }
-    return render(req, 'app/shopping_list.html', ctx)
-
-
 class GroceryItemListView(LoginRequiredMixin, ListView):
     model = GroceryItem
-    ordering = ['is_checked', 'name']
+    ordering = ['name', ]
     paginate_by = 5
 
 
 class UserGroceryItemListView(LoginRequiredMixin, ListView):
     model = GroceryItem
     template_name = 'app/user_groceryitem_list.html'
-    ordering = ['is_checked', 'name']
+    ordering = ['name', ]
     paginate_by = 5
 
     def get_queryset(self):
         usr = get_object_or_404(User, username=self.kwargs.get('username'))
-        return GroceryItem.objects.filter(author=usr).order_by('is_checked', 'name')
+        return GroceryItem.objects.filter(author=usr).order_by('name')
 
 
 class GroceryItemDetailView(LoginRequiredMixin, DetailView):
@@ -73,7 +65,7 @@ class GroceryItemDetailView(LoginRequiredMixin, DetailView):
 
 class GroceryItemCreateView(LoginRequiredMixin, CreateView):
     model = GroceryItem
-    fields = ['name',]
+    fields = ['name', ]
 
     def form_valid(self, form):
         form.instance.author = self.request.user
