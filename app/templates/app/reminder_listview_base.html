@@ -38,6 +38,9 @@
                 </div>
                 <div class="d-flex align-items-center justify-content-center">
                     <a class="btn btn-outline-info" href="{% url 'app_reminder_update' item.id %}">Edit</a>
+                    <a class="btn btn-outline-danger" href="{% url 'app_reminder_delete' item.id %}">
+                        Delete
+                    </a>
                 </div>
             </div>
         </li>
