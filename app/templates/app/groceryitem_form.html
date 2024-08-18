@@ -10,8 +10,11 @@
             {{ form | crispy }}
         </fieldset>
         <div class="form-group">
-            <button class="btn btn-outline-info" type="submit">
+            <button class="btn btn-outline-info" name="submit_type" value="submit" type="submit">
                 Submit
+            </button>
+            <button class="btn btn-outline-info" name="submit_type" value="submit_and_add" type="submit">
+                Save & Add Another
             </button>
         </div>
     </form>

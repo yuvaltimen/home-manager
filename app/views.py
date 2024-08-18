@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.views.generic import (
     ListView,
     DetailView,
@@ -47,6 +47,13 @@ class GroceryItemCreateView(LoginRequiredMixin, CreateView):
     model = GroceryItem
     fields = ['name', ]
 
+    def get_success_url(self):
+        submit_type = self.request.POST.get('submit_type')
+        print(submit_type)
+        if submit_type == 'submit_and_add':
+            return reverse('app_groceryitem_create')
+        return reverse('app_groceryitem_list')
+
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
@@ -55,6 +62,9 @@ class GroceryItemCreateView(LoginRequiredMixin, CreateView):
 class GroceryItemUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = GroceryItem
     fields = ['name', ]
+
+    def get_success_url(self):
+        return reverse('app_groceryitem_list')
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -68,6 +78,9 @@ class GroceryItemUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
 class GroceryItemDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = GroceryItem
     success_url = '/'
+
+    def get_success_url(self):
+        return reverse('app_groceryitem_list')
 
     def test_func(self):
         item = self.get_object()
