@@ -6,4 +6,4 @@ pyluach
 django-recurrence
 pillow
 python-dotenv
-skyfield
+requests

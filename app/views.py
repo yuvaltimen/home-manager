@@ -1,9 +1,9 @@
+import os
 import datetime
-from pytz import timezone
-from skyfield.api import load
-from skyfield.framelib import ecliptic_frame
 from pyluach.dates import HebrewDate
 from pyluach import parshios
+
+import requests
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import (
@@ -20,36 +20,31 @@ from .models import GroceryItem, Reminder
 
 
 def get_moon_phase(current_dt):
+    req_url = (f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Newark,NJ/"
+               f"{current_dt.strftime('%Y-%m-%d')}"
+               f"?unitGroup=us"
+               f"&key={os.environ['WEATHER_API_KEY']}"
+               f"&include=days"
+               f"&elements=datetime,moonphase,sunrise,sunset,moonrise,moonset")
 
-    ts = load.timescale()
-    t = ts.from_datetime(timezone('US/Eastern').localize(current_dt))
+    resp = requests.get(req_url)
+    phase = resp.json()['days'][0]['moonphase']
 
-    eph = load('de421.bsp')
-    sun, moon, earth = eph['sun'], eph['moon'], eph['earth']
-
-    e = earth.at(t)
-    s = e.observe(sun).apparent()
-    m = e.observe(moon).apparent()
-
-    _, slon, _ = s.frame_latlon(ecliptic_frame)
-    _, mlon, _ = m.frame_latlon(ecliptic_frame)
-    phase = (mlon.degrees - slon.degrees) % 360.0
-
-    if phase < 0.2:
+    if phase == 0:
         return "New_Moon"
-    elif 0.2 < phase < 89.8:
+    elif 0.0 < phase < 0.25:
         return "Waxing_Crescent"
-    elif 89.8 <= phase < 90.2:
+    elif phase == 0.25:
         return "First_Quarter"
-    elif 90.2 <= phase < 179.8:
+    elif 0.25 < phase < 0.5:
         return "Waxing_Gibbous"
-    elif 179.8 <= phase < 180.2:
+    elif phase == 0.5:
         return "Full_Moon"
-    elif 180.2 <= phase < 269.8:
+    elif 0.5 < phase < 0.75:
         return "Waning_Gibbous"
-    elif 269.8 <= phase <= 270.2:
+    elif phase == 0.75:
         return "Last_Quarter"
-    elif phase < 360.0:
+    elif 0.75 < phase <= 1.0:
         return "Waning_Crescent"
     else:
         return "Unknown"
@@ -70,11 +65,10 @@ def get_date_time_ctx():
     return ctx
 
 
-
-
 ########################
 #       VIEWS
 ########################
+
 
 def home(req):
     return redirect(to=today)
@@ -117,7 +111,7 @@ class GroceryItemCreateView(LoginRequiredMixin, CreateView):
 
 class GroceryItemUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = GroceryItem
-    fields = ['name',]
+    fields = ['name', ]
 
     def form_valid(self, form):
         form.instance.author = self.request.user
