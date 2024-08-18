@@ -3,9 +3,17 @@
 {% block content %}
 <div class="content-section">
     {% block page_title%}{% endblock %}
+    <div class="d-flex column">
+        <a class="btn btn-outline-info" href="{% url 'app_groceryitem_create' %}" >+ New</a>
+    </div>
+    </br>
+    <p class="text-muted">
+        Click on an item to edit.
+        You can also filter by user by clicking on the username.
+    </p>
     <div class="d-flex justify-content-around">
         <button class="btn btn-outline-info" type="button" onclick="select_all()">Select All</button>
-        <button class="btn btn-outline-info" type="button" onclick="clear_all()">Unselect All</button>
+        <button class="btn btn-outline-info" type="button" onclick="clear_all()">Deselect All</button>
     </div>
     </br>
     <ul class="list-group" id="the_specific_checkbox_ul">
