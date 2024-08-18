@@ -8,10 +8,6 @@ from django.conf.urls.static import static
 from users import views as user_views
 
 
-js_info_dict = {
-    'packages': ('recurrence', ),
-}
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', user_views.register, name='register'),
@@ -31,7 +27,7 @@ urlpatterns = [
          auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'),
          name="password_reset_complete"),
     path('', include('app.urls')),
-    re_path(r'^jsi18n/$', JavaScriptCatalog.as_view(), js_info_dict),
+    re_path(r'^jsi18n/$', JavaScriptCatalog.as_view(packages=['recurrence']), name='javascript_catalog'),
 ]
 
 if settings.DEBUG:

@@ -2,15 +2,25 @@
 
 {% block content %}
 <div class="content-section">
-    <h1>Reminders</h1>
+    {% block page_title%}{% endblock %}
+    <div class="d-flex column">
+        <a class="btn btn-outline-info" href="{% url 'app_reminder_create' %}" >+ New</a>
+    </div>
+    </br>
+    <p class="text-muted">
+        Click on an item to edit.
+        You can also filter by user by clicking on the username.
+    </p>
     <ul class="list-group">
-        {% for item in reminders %}
+        {% for item in object_list %}
         <li class="list-group-item list-group-item-light">
             <div class="d-flex justify-content-between">
                 <div>
                     <h3>{{ item.name }}</h3>
-                    <p class="text-muted">
-                        Added by <b>{{ item.author }}</b> on {{ item.last_modified | date:"m/d/Y (H:i)" }}
+                     <p class="text-muted">
+                        Added by
+                        <a href="{% url 'app_user_reminder_list' item.author %}"><b>{{ item.author }}</b></a>
+                        on {{ item.last_modified | date:"m/d/Y (H:i)" }}
                     </p>
                     <p>{{ item.description }}</p>
                     {% for inc_rule in item.schedule.rrules %}
@@ -27,7 +37,7 @@
                     {% endfor %}
                 </div>
                 <div class="d-flex align-items-center justify-content-center">
-                    <a class="btn btn-outline-info" href="{% url 'app_today' %}">Edit</a>
+                    <a class="btn btn-outline-info" href="{% url 'app_reminder_update' item.id %}">Edit</a>
                 </div>
             </div>
         </li>

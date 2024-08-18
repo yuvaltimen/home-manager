@@ -6,22 +6,30 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from .models import GroceryItem, Reminder
 from .helper_functions import get_date_time_ctx
 
 
+##################
+#   HOME
+##################
 def home(req):
     return redirect(to=today)
 
 
+##################
+#   TODAY
+##################
 def today(req):
     ctx = get_date_time_ctx()
     return render(req, 'app/today.html', ctx)
 
 
+##################
+#   SHOPPING_LIST
+##################
 class GroceryItemListView(LoginRequiredMixin, ListView):
     model = GroceryItem
     ordering = ['name', ]
@@ -77,7 +85,6 @@ class GroceryItemUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
 
 class GroceryItemDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = GroceryItem
-    success_url = '/'
 
     def get_success_url(self):
         return reverse('app_groceryitem_list')
@@ -87,11 +94,72 @@ class GroceryItemDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
         return self.request.user == item.author
 
 
-@login_required
-def reminders(req):
-    ctx = {
-        'reminders': Reminder.objects.all()
-    }
-    return render(req, 'app/reminders.html', ctx)
+##################
+#   REMINDER
+##################
+class ReminderListView(LoginRequiredMixin, ListView):
+    model = Reminder
+    paginate_by = 50
+
+
+class UserReminderListView(LoginRequiredMixin, ListView):
+    model = Reminder
+    template_name = 'app/user_reminder_list.html'
+    paginate_by = 50
+
+    def get_queryset(self):
+        usr = get_object_or_404(User, username=self.kwargs.get('username'))
+        return Reminder.objects.filter(author=usr).order_by('name')
+
+
+class ReminderDetailView(LoginRequiredMixin, DetailView):
+    model = Reminder
+
+
+class ReminderCreateView(LoginRequiredMixin, CreateView):
+    model = Reminder
+    fields = ['name', 'description', 'schedule', ]
+
+    def get_success_url(self):
+        submit_type = self.request.POST.get('submit_type')
+        print(submit_type)
+        if submit_type == 'submit_and_add':
+            return reverse('app_reminder_create')
+        return reverse('app_reminder_list')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+
+class ReminderUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Reminder
+    fields = ['name', 'description', 'schedule', ]
+
+    def get_success_url(self):
+        submit_type = self.request.POST.get('submit_type')
+        print(submit_type)
+        if submit_type == 'submit_and_add':
+            return reverse('app_reminder_create')
+        return reverse('app_reminder_list')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        item = self.get_object()
+        return self.request.user == item.author
+
+
+class ReminderDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Reminder
+
+    def get_success_url(self):
+        return reverse('app_reminder_list')
+
+    def test_func(self):
+        item = self.get_object()
+        return self.request.user == item.author
 
 

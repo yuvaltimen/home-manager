@@ -1,14 +1,17 @@
 {% extends "app/base.html" %}
 {% load crispy_forms_tags %}
+{% load static %}
 
 {% block content %}
 <div class="content-section">
     <form method="POST">
         {% csrf_token %}
         <fieldset class="form-group">
-            <legend class="border-bottom mb-4">Grocery Item</legend>
+            <legend class="border-bottom mb-4">Reminder</legend>
             {{ form | crispy }}
+            {{ form.media }}
         </fieldset>
+        </br>
         <div class="form-group">
             <button class="btn btn-outline-info" name="submit_type" value="submit" type="submit">
                 Submit
@@ -19,5 +22,4 @@
         </div>
     </form>
 </div>
-
 {% endblock content %}
