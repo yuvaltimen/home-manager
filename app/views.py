@@ -8,6 +8,8 @@ from django.views.generic import (
 )
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
+
+from .forms import ReminderUpdateForm
 from .models import GroceryItem, Reminder
 from .helper_functions import get_date_time_ctx
 
@@ -118,7 +120,7 @@ class ReminderDetailView(LoginRequiredMixin, DetailView):
 
 class ReminderCreateView(LoginRequiredMixin, CreateView):
     model = Reminder
-    fields = ['name', 'description', 'schedule', ]
+    form_class = ReminderUpdateForm
 
     def get_success_url(self):
         submit_type = self.request.POST.get('submit_type')
@@ -134,7 +136,7 @@ class ReminderCreateView(LoginRequiredMixin, CreateView):
 
 class ReminderUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Reminder
-    fields = ['name', 'description', 'schedule', ]
+    form_class = ReminderUpdateForm
 
     def get_success_url(self):
         submit_type = self.request.POST.get('submit_type')

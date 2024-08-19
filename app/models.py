@@ -18,7 +18,8 @@ class GroceryItem(models.Model):
 
 class Reminder(models.Model):
     name = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     author = models.ForeignKey(to=User, on_delete=models.CASCADE)
     schedule = RecurrenceField()
+    time_to_send = models.TimeField()
     last_modified = models.DateTimeField(auto_now=True)

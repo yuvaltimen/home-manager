@@ -1,4 +1,5 @@
 {% extends "app/base.html" %}
+{% load extra_tags %}
 
 {% block content %}
 <div class="content-section">
@@ -8,44 +9,38 @@
     </div>
     </br>
     <p class="text-muted">
-        Click on an item to edit.
-        You can also filter by user by clicking on the username.
+        You can filter by user by clicking on the username.
     </p>
     <ul class="list-group">
         {% for item in object_list %}
         <li class="list-group-item list-group-item-light">
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-center">
                 <div>
                     <h3>{{ item.name }}</h3>
-                     <p class="text-muted">
+                    <p class="text-muted">
                         Added by
                         <a href="{% url 'app_user_reminder_list' item.author %}"><b>{{ item.author }}</b></a>
                         on {{ item.last_modified | date:"m/d/Y (H:i)" }}
                     </p>
-                    <p>{{ item.description }}</p>
-                    {% for inc_rule in item.schedule.rrules %}
-                    <p class="text-muted">Occurs {{ inc_rule.to_text }} </p>
-                    {% endfor %}
-                    {% for exc_rule in item.schedule.exrules %}
-                    <p class="text-muted">except for {{ exc_rule.to_text }}</p>
-                    {% endfor %}
-                    {% for inc_date in item.schedule.rdates %}
-                    <p class="text-muted">Occurs on date: {{ inc_date }} </p>
-                    {% endfor %}
-                    {% for exc_date in item.schedule.exdates %}
-                    <p class="text-muted">Except on date: {{ exc_date }} </p>
-                    {% endfor %}
-                </div>
-                <div class="d-flex align-items-center justify-content-center">
+                    {%if item.description %}
+                    <div class="content-section">
+                        <p>{{ item.description }}</p>
+                    </div>
+                    {% endif %}
+                    <p class="alert alert-info">
+                        Next reminder at <b>{{ item.time_to_send }}</b>
+                        on <b>{{ item.schedule | get_next_occurrence | date:"M jS, Y" }}</b>
+                    </p>
+                    <div class="d-flex align-items-center justify-content-center">
                     <a class="btn btn-outline-info" href="{% url 'app_reminder_update' item.id %}">Edit</a>
                     <a class="btn btn-outline-danger" href="{% url 'app_reminder_delete' item.id %}">
                         Delete
                     </a>
+                </div>
                 </div>
             </div>
         </li>
         {% endfor %}
     </ul>
 </div>
-
 {% endblock content %}
