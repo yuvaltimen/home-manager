@@ -7,3 +7,4 @@ django-recurrence
 pillow
 python-dotenv
 requests
+django-mobile-detect

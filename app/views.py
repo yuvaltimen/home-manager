@@ -25,8 +25,12 @@ def home(req):
 #   TODAY
 ##################
 def today(req):
+    print(req.device)
     ctx = get_date_time_ctx()
-    return render(req, 'app/today.html', ctx)
+    if req.device['is_mobile']:
+        return render(req, 'app/today.html', ctx)
+    else:
+        return render(req, 'app/today.html', ctx)
 
 
 ##################
