@@ -14,10 +14,10 @@
     <div class="d-flex justify-content-around">
         <button class="btn btn-outline-info" type="button" onclick="select_all()">Select All</button>
         <button class="btn btn-outline-info" type="button" onclick="clear_all()">Deselect All</button>
-        <form method="POST" id="groceryitem_delete_multi_form" action="{% url 'app_groceryitem_delete_many' %}">
+        <form method="POST" id="groceryitem_delete_multi_form" action="{% url 'app_groceryitem_confirm_delete_all' %}">
             {% csrf_token %}
             <input type="hidden" name="item_ids" id="item_ids">
-            <button class="btn btn-outline-danger" type="submit">Delete Selected</button>
+            <button class="btn btn-outline-danger" type="submit">Delete All</button>
         </form>
     </div>
     </br>

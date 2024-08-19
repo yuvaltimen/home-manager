@@ -103,30 +103,24 @@ class GroceryItemDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
         return self.request.user == item.author
 
 
-class GroceryItemDeleteSelectedView(LoginRequiredMixin, DeletionMixin, View):
+class GroceryItemDeleteAllView(LoginRequiredMixin, DeletionMixin, View):
     model = GroceryItem
 
     def post(self, request, *args, **kwargs):
-        form = GroceryItemDeleteManyForm(request.POST)
-        print(form)
-        if form.is_valid():
-            # Extract the IDs from the form
-            item_ids = form.cleaned_data['item_ids']
-            print(form.cleaned_data)
-            # Split the IDs into a list
-            item_ids = item_ids.split(',')
-            # Convert the list into integers
-            item_ids = [int(item_id) for item_id in item_ids]
-            # Filter and delete the items
-            marked_for_deletion = GroceryItem.objects.filter(id__in=item_ids)
-            deleted_count, _ = marked_for_deletion.delete()
-            # Provide feedback to the user
-            messages.success(request, f"Deleted {deleted_count} items successfully.")
-        else:
-            messages.error(request, "Failed to delete items.")
-
-            # Redirect to the appropriate page after deletion
+        deleted_count, _ = GroceryItem.objects.all().delete()
+        messages.success(request, f"Deleted {deleted_count} items successfully.")
+        # Redirect to the appropriate page after deletion
         return redirect('app_groceryitem_list')
+
+    def get_success_url(self):
+        return reverse('app_groceryitem_list')
+
+
+class GroceryItemConfirmDeleteAllView(LoginRequiredMixin, View):
+    model = GroceryItem
+
+    def post(self, req):
+        return render(req, 'app/groceryitem_confirm_delete_all.html')
 
     def get_success_url(self):
         return reverse('app_groceryitem_list')
