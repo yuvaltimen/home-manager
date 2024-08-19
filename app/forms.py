@@ -9,3 +9,7 @@ class ReminderUpdateForm(forms.ModelForm):
         widgets = {
             'time_to_send': forms.TimeInput(attrs={'type': 'time'}, format='%H:%M'),
         }
+
+
+class GroceryItemDeleteManyForm(forms.Form):
+    item_ids = forms.CharField(widget=forms.HiddenInput())

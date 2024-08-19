@@ -6,10 +6,13 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
+from django.contrib import messages
+from django.views.generic.edit import DeletionMixin
+from django.views.generic.base import View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 
-from .forms import ReminderUpdateForm
+from .forms import ReminderUpdateForm, GroceryItemDeleteManyForm
 from .models import GroceryItem, Reminder
 from .helper_functions import get_date_time_ctx
 
@@ -100,6 +103,35 @@ class GroceryItemDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
         return self.request.user == item.author
 
 
+class GroceryItemDeleteSelectedView(LoginRequiredMixin, DeletionMixin, View):
+    model = GroceryItem
+
+    def post(self, request, *args, **kwargs):
+        form = GroceryItemDeleteManyForm(request.POST)
+        print(form)
+        if form.is_valid():
+            # Extract the IDs from the form
+            item_ids = form.cleaned_data['item_ids']
+            print(form.cleaned_data)
+            # Split the IDs into a list
+            item_ids = item_ids.split(',')
+            # Convert the list into integers
+            item_ids = [int(item_id) for item_id in item_ids]
+            # Filter and delete the items
+            marked_for_deletion = GroceryItem.objects.filter(id__in=item_ids)
+            deleted_count, _ = marked_for_deletion.delete()
+            # Provide feedback to the user
+            messages.success(request, f"Deleted {deleted_count} items successfully.")
+        else:
+            messages.error(request, "Failed to delete items.")
+
+            # Redirect to the appropriate page after deletion
+        return redirect('app_groceryitem_list')
+
+    def get_success_url(self):
+        return reverse('app_groceryitem_list')
+
+
 ##################
 #   REMINDER
 ##################
@@ -167,5 +199,4 @@ class ReminderDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         item = self.get_object()
         return self.request.user == item.author
-
 

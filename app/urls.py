@@ -6,6 +6,7 @@ from .views import (
     GroceryItemCreateView,
     GroceryItemUpdateView,
     GroceryItemDeleteView,
+    GroceryItemDeleteSelectedView,
     UserGroceryItemListView,
     ReminderListView,
     UserReminderListView,
@@ -27,6 +28,7 @@ urlpatterns = [
     path('shopping_list/new/', GroceryItemCreateView.as_view(), name='app_groceryitem_create'),
     path('shopping_list/<int:pk>/update/', GroceryItemUpdateView.as_view(), name='app_groceryitem_update'),
     path('shopping_list/<int:pk>/delete/', GroceryItemDeleteView.as_view(), name='app_groceryitem_delete'),
+    path('shopping_list/delete_multi/', GroceryItemDeleteSelectedView.as_view(), name='app_groceryitem_delete_many'),
     path('shopping_list/user/<str:username>/', UserGroceryItemListView.as_view(), name='app_user_groceryitem_list'),
 
     # REMINDERS
