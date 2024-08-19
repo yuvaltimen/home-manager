@@ -24,7 +24,7 @@
     <ul class="list-group" id="the_specific_checkbox_ul">
         {% for item in object_list %}
         <li class="list-group-item list-group-item-light">
-            <h3><a class="article-title" href="{% url 'app_groceryitem_detail' item.id %}">checkbox_{{ item.pk }}</a></h3>
+            <h3><a class="article-title" href="{% url 'app_groceryitem_detail' item.id %}">{{ item.name }}</a></h3>
             <input class="form-check-input" id="checkbox_{{ item.pk }}" type="checkbox" value="">
             <label class="form-check-label" for="checkbox_{{ item.pk }}">
                 <div class="d-flex p-2 bd-highlight">
