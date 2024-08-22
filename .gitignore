@@ -6,3 +6,4 @@ staticfiles
 media/*
 .env
 *.bsp
+generate_django_secret_key.py
