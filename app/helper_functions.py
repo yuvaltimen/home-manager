@@ -48,13 +48,11 @@ def get_moon_phase(current_dt):
     sentinel = object()
     cache_val = cache.get("moon_phase", sentinel)
     if cache_val is sentinel:
-        print("CACHE MISS")
         resp = make_weather_api_call(current_dt).json()
         # Cache for at least 5s, in case we're super close to midnight
         seconds_until_midnight = max(seconds_till_midnight(current_dt), 5)
         cache.set("moon_phase", resp, seconds_until_midnight)
     else:
-        print("CACHE HIT")
         resp = cache.get("moon_phase")
 
     phase = resp['days'][0]['moonphase']

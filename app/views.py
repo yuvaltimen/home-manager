@@ -28,12 +28,8 @@ def home(req):
 #   TODAY
 ##################
 def today(req):
-    print(req.device)
     ctx = get_date_time_ctx()
-    if req.device['is_mobile']:
-        return render(req, 'app/today.html', ctx)
-    else:
-        return render(req, 'app/today.html', ctx)
+    return render(req, 'app/today.html', ctx)
 
 
 ##################
@@ -64,7 +60,6 @@ class GroceryItemCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         submit_type = self.request.POST.get('submit_type')
-        print(submit_type)
         if submit_type == 'submit_and_add':
             return reverse('app_groceryitem_create')
         return reverse('app_groceryitem_list')
