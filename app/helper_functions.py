@@ -52,7 +52,7 @@ def get_moon_phase(current_dt):
         resp = make_weather_api_call(current_dt).json()
         # Cache for at least 5s, in case we're super close to midnight
         seconds_until_midnight = max(seconds_till_midnight(current_dt), 5)
-        cache.set("moon_phase", resp, timout=seconds_until_midnight)
+        cache.set("moon_phase", resp, seconds_until_midnight)
     else:
         print("CACHE HIT")
         resp = cache.get("moon_phase")
