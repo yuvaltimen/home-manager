@@ -11,8 +11,11 @@ from django.views.generic.edit import DeletionMixin
 from django.views.generic.base import View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
+from django.views.decorators.cache import never_cache
+from django.utils.decorators import method_decorator
 
-from .forms import ReminderUpdateForm, GroceryItemDeleteManyForm
+
+from .forms import ReminderUpdateForm
 from .models import GroceryItem, Reminder
 from .helper_functions import get_date_time_ctx
 
@@ -27,6 +30,7 @@ def home(req):
 ##################
 #   TODAY
 ##################
+@never_cache
 def today(req):
     ctx = get_date_time_ctx()
     return render(req, 'app/today.html', ctx)
@@ -39,6 +43,10 @@ class GroceryItemListView(LoginRequiredMixin, ListView):
     model = GroceryItem
     ordering = ['name', ]
 
+    @method_decorator(never_cache)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 class UserGroceryItemListView(LoginRequiredMixin, ListView):
     model = GroceryItem
@@ -49,9 +57,17 @@ class UserGroceryItemListView(LoginRequiredMixin, ListView):
         usr = get_object_or_404(User, username=self.kwargs.get('username'))
         return GroceryItem.objects.filter(author=usr).order_by('name')
 
+    @method_decorator(never_cache)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 class GroceryItemDetailView(LoginRequiredMixin, DetailView):
     model = GroceryItem
+
+    @method_decorator(never_cache)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 class GroceryItemCreateView(LoginRequiredMixin, CreateView):
@@ -125,6 +141,10 @@ class GroceryItemConfirmDeleteAllView(LoginRequiredMixin, View):
 class ReminderListView(LoginRequiredMixin, ListView):
     model = Reminder
 
+    @method_decorator(never_cache)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 class UserReminderListView(LoginRequiredMixin, ListView):
     model = Reminder
@@ -134,9 +154,17 @@ class UserReminderListView(LoginRequiredMixin, ListView):
         usr = get_object_or_404(User, username=self.kwargs.get('username'))
         return Reminder.objects.filter(author=usr).order_by('name')
 
+    @method_decorator(never_cache)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 class ReminderDetailView(LoginRequiredMixin, DetailView):
     model = Reminder
+
+    @method_decorator(never_cache)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 class ReminderCreateView(LoginRequiredMixin, CreateView):
@@ -145,7 +173,6 @@ class ReminderCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         submit_type = self.request.POST.get('submit_type')
-        print(submit_type)
         if submit_type == 'submit_and_add':
             return reverse('app_reminder_create')
         return reverse('app_reminder_list')

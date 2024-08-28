@@ -5,7 +5,6 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     depends_on:
       - db
-      - memcached
     volumes:
       - .:/home_manager
     ports:
@@ -24,14 +23,6 @@ services:
       - pg_data:/var/lib/postgresql/data/
     env_file:
       - ./.env
-    networks:
-      - django_app_network
-
-  memcached:
-    image: memcached:latest
-    ports:
-      - "11211:11211"
-    command: [ "memcached" ]
     networks:
       - django_app_network
 

@@ -3,6 +3,6 @@
 {% block page_title %}
 <div class="d-flex justify-content-around">
     <img class="rounded-circle" src="{{ user.profile.image.url }}" width="50" height="50">
-    <h1>{{ view.kwargs.username }}'s reminder list ({{ page_obj.paginator.count }} items)</h1>
+    <h1>{{ view.kwargs.username }}'s reminder list ({{ object_list | length }} items)</h1>
 </div>
 {% endblock page_title %}

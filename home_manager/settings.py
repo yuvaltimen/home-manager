@@ -61,9 +61,8 @@ CACHE_MIDDLEWARE_KEY_PREFIX = ''
 
 CACHES = {
     "default": {
-
-        "BACKEND": os.environ.get("CACHE_BACKEND", "django.core.cache.backends.memcached.PyMemcacheCache"),
-        "LOCATION": os.environ.get("CACHE_LOCATIONS", "127.0.0.1:11211").split(" "),
+        "BACKEND": os.environ.get("CACHE_BACKEND", "django.core.cache.backends.dummy.DummyCache"),
+        "LOCATION": os.environ.get("CACHE_LOCATION", "localhost:11211"),
     }
 }
 
@@ -74,7 +73,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'recurrence',
-    'mobiledetect',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
