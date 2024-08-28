@@ -2,9 +2,10 @@
 services:
 
   nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
+    build: ./nginx
+    volumes:
+      - static_volume:/home/django_app/web/staticfiles
+      - media_volume:/home/django_app/web/media
     ports:
       - 1337:80
     depends_on:
@@ -14,7 +15,10 @@ services:
     build:
       context: ./home_manager
       dockerfile: Dockerfile.prod
-    command: gunicorn home_manager.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn home_manager.wsgi:application --bind 0.0.0.0:8000 && python manage.py migrate --no-input && python manage.py collectstatic --no-input --clear
+    volumes:
+      - static_volume:/home/django_app/web/staticfiles
+      - media_volume:/home/django_app/web/media
     depends_on:
       - db
     expose:
@@ -34,3 +38,5 @@ services:
 
 volumes:
   pg_data:
+  static_volume:
+  media_volume:

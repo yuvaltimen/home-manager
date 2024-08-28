@@ -2,7 +2,7 @@
 services:
   web:
     build: ./home_manager
-    command: python /home_manager/manage.py runserver 0.0.0.0:8000
+    command: python /home_manager/manage.py runserver 0.0.0.0:8000 && python /home_manager/manage.py migrate
     depends_on:
       - db
     volumes:
