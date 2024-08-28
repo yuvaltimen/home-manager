@@ -23,11 +23,7 @@ FROM python:3.11.1-slim-buster AS runner
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
-RUN apt-get update && apt-get install -y \
-    netcat \
-    memcached
-
-WORKDIR /home_manager/
+WORKDIR /home_manager
 
 COPY --from=builder /opt/venv /opt/venv
 COPY --from=builder /home_manager/manage.py /home_manager/manage.py

@@ -1,0 +1,52 @@
+FROM python:3.11.1-slim-buster AS builder
+
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
+
+WORKDIR /home_manager
+
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+COPY ./requirements.txt /home_manager/requirements.txt
+
+RUN pip install --upgrade pip  && pip install --no-cache-dir -Ur /home_manager/requirements.txt
+
+COPY . /home_manager
+RUN chmod +x /home_manager/entrypoint.prod.sh
+
+RUN python -m pytest /home_manager/tests/*
+
+
+FROM python:3.11.1-slim-buster AS runner
+
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
+
+RUN mkdir -p /home/django_app
+
+RUN addgroup --system django_app && adduser --system --group django_app
+
+ENV HOME=/home/django_app
+ENV APP_HOME=/home/django_app/web
+RUN mkdir $APP_HOME
+WORKDIR $APP_HOME
+
+RUN apt-get update && apt-get install -y --no-install-recommends netcat
+
+COPY --from=builder /opt/venv /opt/venv
+COPY --from=builder /home_manager/manage.py .
+COPY --from=builder /home_manager/entrypoint.prod.sh .
+COPY --from=builder /home_manager/app/* ./app/
+COPY --from=builder /home_manager/home_manager/* ./home_manager/
+COPY --from=builder /home_manager/users/* ./users/
+COPY --from=builder /home_manager/media/* ./media/
+
+ENV PATH="/opt/venv/bin:$PATH"
+
+RUN chmod +x  $APP_HOME/entrypoint.prod.sh
+RUN chown -R django_app:django_app $APP_HOME
+
+USER django_app
+
+ENTRYPOINT ["/home/django_app/web/entrypoint.prod.sh"]
