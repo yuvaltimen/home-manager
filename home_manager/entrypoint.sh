@@ -11,6 +11,6 @@ then
     echo "PostgreSQL started"
 fi
 
-python manage.py migrate
+python /home_manager/manage.py migrate
 
 exec "$@"

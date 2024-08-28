@@ -1,18 +1,16 @@
 
 services:
   web:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    build: ./home_manager
+    command: python /home_manager/manage.py runserver 0.0.0.0:8000
     depends_on:
       - db
     volumes:
-      - .:/home_manager
+      - ./home_manager/:/home_manager/
     ports:
       - 8000:8000
     env_file:
-      - ./.env
-    networks:
-      - django_app_network
+      - .env
 
   db:
     image: postgres:15
@@ -22,13 +20,7 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data/
     env_file:
-      - ./.env
-    networks:
-      - django_app_network
-
+      - .env
 
 volumes:
   pg_data:
-
-networks:
-  django_app_network:

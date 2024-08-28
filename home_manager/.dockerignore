@@ -1,10 +1,10 @@
-home_manager/.venv
+**/.env
+**/.venv
 **/db.sqlite3
 **/.DS_Store
+**/media/profile_pics/*
 **/.idea
 **/__pycache__
-staticfiles
-**/media/*
-.env*
+db.sqlite3
 *.bsp
 generate_django_secret_key.py
