@@ -26,6 +26,13 @@ services:
     env_file:
       - .env.prod
 
+  cache:
+    image: memcached:latest
+    ports:
+      - 11211:11211
+    command:
+      - '-m 128'
+
   db:
     image: postgres:15
     restart: always

@@ -188,7 +188,6 @@ class ReminderUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def get_success_url(self):
         submit_type = self.request.POST.get('submit_type')
-        print(submit_type)
         if submit_type == 'submit_and_add':
             return reverse('app_reminder_create')
         return reverse('app_reminder_list')
