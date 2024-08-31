@@ -23,4 +23,5 @@ pymemcache==4.0.0
 pytest==8.3.2
 gunicorn==23.0.0
 pylibmc==1.6.3
-
+redis==5.0.8
+hiredis==3.0.0

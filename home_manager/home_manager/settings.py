@@ -57,8 +57,9 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 
 
 CACHE_MIDDLEWARE_ALIAS = 'default'
-CACHE_MIDDLEWARE_SECONDS = 6000
 CACHE_MIDDLEWARE_KEY_PREFIX = ''
+# Need to explicitly cache for explicit time
+CACHE_MIDDLEWARE_SECONDS = 0
 
 CACHES = {
     "default": {

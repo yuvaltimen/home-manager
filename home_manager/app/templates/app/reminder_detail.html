@@ -21,7 +21,7 @@
         {% endfor %}
 
         {% for inc_date in object.schedule.rdates %}
-        <li><p class="text-muted">Occurs on date: {{ inc_date }} </p></li>
+        <li><p class="text-muted">On date: {{ inc_date }} </p></li>
         {% endfor %}
     </ul>
     {% endif%}
@@ -29,11 +29,11 @@
     <p>Excluding:</p>
     <ul>
         {% for exc_rule in object.schedule.exrules %}
-        <li><p class="text-muted">except for {{ exc_rule.to_text }}</p></li>
+        <li><p class="text-muted">{{ exc_rule.to_text }}</p></li>
         {% endfor %}
 
         {% for exc_date in object.schedule.exdates %}
-        <li><p class="text-muted">Except on date: {{ exc_date }} </p></li>
+        <li><p class="text-muted">On date: {{ exc_date }} </p></li>
         {% endfor %}
     </ul>
     {% endif%}
