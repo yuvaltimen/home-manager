@@ -17,6 +17,13 @@ def make_weather_api_call(current_dt):
     return requests.get(req_url)
 
 
+def next_occurrence_in_timeframe(recurrence_obj, begin, end):
+    occurrences = recurrence_obj.between(begin, end, dtstart=begin, dtend=end, inc=False)
+    if len(occurrences) > 0:
+        return occurrences[0]
+    return None
+
+
 def moon_phase_mappings(phase):
     if phase == 0:
         return "New_Moon"

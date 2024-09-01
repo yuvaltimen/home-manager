@@ -9,9 +9,8 @@
         <a href="{% url 'app_user_reminder_list' object.author %}"><b>{{ object.author }}</b></a>
         on {{ object.last_modified | date:"m/d/Y (H:i)" }}
     </p>
-    <p>
-        Next reminder at <b>{{ object.time_to_send }}</b>
-        on <b>{{ object.schedule | get_next_occurrence | date:"M jS, Y" }}</b>
+    <p class="alert alert-info">
+        {{ object | display_next_occurrence }}
     </p>
     {% if object.schedule.rrules or object.schedule.rdates %}
     <p>Occurs:</p>
@@ -44,8 +43,8 @@
     {% endif %}
     </br>
     <div class="d-flex align-items-center justify-content-center">
-        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'app_reminder_update' object.id %}">Update</a>
-        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'app_reminder_delete' object.id %}">Delete</a>
+        <a class="btn btn-outline-info btn-sm mt-1 mb-1" href="{% url 'app_reminder_update' object.id %}">Update</a>
+        <a class="btn btn-outline-danger btn-sm mt-1 mb-1" href="{% url 'app_reminder_delete' object.id %}">Delete</a>
     </div>
 </div>
 {% endblock content %}

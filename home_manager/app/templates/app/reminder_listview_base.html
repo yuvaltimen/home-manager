@@ -12,28 +12,27 @@
         You can filter by user by clicking on the username.
     </p>
     <ul class="list-group">
-        {% for item in object_list %}
+        {% for object in object_list %}
         <li class="list-group-item list-group-item-light">
             <div class="d-flex justify-content-center">
                 <div>
-                    <h3><a class="article-title" href="{% url 'app_reminder_detail' item.id %}">{{ item.name }}</a></h3>
+                    <h3><a class="article-title" href="{% url 'app_reminder_detail' object.id %}">{{ object.name }}</a></h3>
                     <p class="text-muted">
                         Added by
-                        <a href="{% url 'app_user_reminder_list' item.author %}"><b>{{ item.author }}</b></a>
-                        on {{ item.last_modified | date:"m/d/Y (H:i)" }}
+                        <a href="{% url 'app_user_reminder_list' object.author %}"><b>{{ object.author }}</b></a>
+                        on {{ object.last_modified | date:"m/d/Y (H:i)" }}
                     </p>
-                    {%if item.description %}
+                    {%if object.description %}
                     <div class="content-section">
-                        <p>{{ item.description }}</p>
+                        <p>{{ object.description }}</p>
                     </div>
                     {% endif %}
                     <p class="alert alert-info">
-                        Next reminder at <b>{{ item.time_to_send }}</b>
-                        on <b>{{ item.schedule | get_next_occurrence | date:"M jS, Y" }}</b>
+                        {{ object | display_next_occurrence }}
                     </p>
                     <div class="d-flex align-items-center justify-content-center">
-                    <a class="btn btn-outline-info" href="{% url 'app_reminder_update' item.id %}">Edit</a>
-                    <a class="btn btn-outline-danger" href="{% url 'app_reminder_delete' item.id %}">
+                    <a class="btn btn-outline-info" href="{% url 'app_reminder_update' object.id %}">Edit</a>
+                    <a class="btn btn-outline-danger" href="{% url 'app_reminder_delete' object.id %}">
                         Delete
                     </a>
                 </div>
