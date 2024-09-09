@@ -14,11 +14,10 @@ from django.contrib.auth.models import User
 from django.views.decorators.cache import never_cache
 from django.utils.decorators import method_decorator
 
-from webpush import send_user_notification
-
-from .forms import ReminderUpdateForm
-from .models import GroceryItem, Reminder
-from .helper_functions import get_date_time_ctx
+from app.forms import ReminderUpdateForm
+from app.models import GroceryItem, Reminder
+from app.helper_functions import get_date_time_ctx
+from app.tasks import send_push
 
 
 ##################
@@ -55,9 +54,8 @@ class UserGroceryItemListView(LoginRequiredMixin, ListView):
     ordering = ['name', ]
 
     def get_queryset(self):
-        payload = {"head": "Welcome!", "body": "Hello World"}
         usr = get_object_or_404(User, username=self.kwargs.get('username'))
-        send_user_notification(user=self.request.user, payload=payload, ttl=100)
+        send_push(self.kwargs.get('username'), head="Hello", body="Hello world!")
         return GroceryItem.objects.filter(author=usr).order_by('name')
 
     @method_decorator(never_cache)

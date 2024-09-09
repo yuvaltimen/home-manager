@@ -26,3 +26,4 @@ pylibmc==1.6.3
 redis==5.0.8
 hiredis==3.0.0
 django-webpush==0.3.6
+django-workers==0.2.0

@@ -83,6 +83,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'recurrence',
     'webpush',
+    'workers',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
