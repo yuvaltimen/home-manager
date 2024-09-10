@@ -17,7 +17,6 @@ from django.utils.decorators import method_decorator
 from appl.forms import ReminderUpdateForm
 from appl.models import GroceryItem, Reminder
 from appl.helper_functions import get_date_time_ctx
-from appl.tasks import send_push
 
 
 ##################
@@ -55,7 +54,7 @@ class UserGroceryItemListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         usr = get_object_or_404(User, username=self.kwargs.get('username'))
-        send_push(self.kwargs.get('username'), head="Hello", body="Hello world!")
+        # send_push.delay(self.kwargs.get('username'), head="Hello", body="Hello world!", countdown=10)
         return GroceryItem.objects.filter(author=usr).order_by('name')
 
     @method_decorator(never_cache)

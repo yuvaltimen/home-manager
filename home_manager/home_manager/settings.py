@@ -62,6 +62,10 @@ CACHE_MIDDLEWARE_KEY_PREFIX = ''
 CACHE_MIDDLEWARE_SECONDS = 0
 
 
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://127.0.0.1:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://127.0.0.1:6379/0")
+
+
 WEBPUSH_SETTINGS = {
     "VAPID_PUBLIC_KEY": os.environ.get("VAPID_PUBLIC_APP_KEY"),
     "VAPID_PRIVATE_KEY": os.environ.get("VAPID_PRIVATE_APP_KEY"),
@@ -83,7 +87,6 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'recurrence',
     'webpush',
-    'workers',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

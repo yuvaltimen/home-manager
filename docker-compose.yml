@@ -1,16 +1,70 @@
 
 services:
   web:
-    build: ./home_manager
-    command: python /home_manager/manage.py runserver 0.0.0.0:8000 && python /home_manager/manage.py migrate
-    depends_on:
-      - db
+    build:
+      context: .
+      dockerfile: ./compose/dev/django/Dockerfile
+    image: django_home_manager_web_dev
+    command: /start
     volumes:
       - ./home_manager/:/home_manager/
     ports:
       - 8000:8000
     env_file:
-      - .env.dev
+      - .env_files/.env.dev
+    depends_on:
+      - db
+      - redis
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: ./compose/dev/django/Dockerfile
+    image: django_home_manager_celery_worker_dev
+    command: /start-celeryworker
+    volumes:
+      - ./home_manager/:/home_manager/
+    env_file:
+      - .env_files/.env.dev
+    depends_on:
+      - redis
+      - db
+
+  celery_beat:
+    build:
+      context: .
+      dockerfile: ./compose/dev/django/Dockerfile
+    image: django_home_manager_celery_beat_dev
+    command: /start-celerybeat
+    volumes:
+      - ./home_manager/:/home_manager/
+    env_file:
+      - .env_files/.env.dev
+    depends_on:
+      - redis
+      - db
+
+  flower:
+    build:
+      context: .
+      dockerfile: ./compose/dev/django/Dockerfile
+    image: django_home_manager_celery_flower_dev
+    command: /start-flower
+    volumes:
+      - ./home_manager/:/home_manager/
+    env_file:
+      - .env_files/.env.dev
+    ports:
+      - 5557:5557
+    depends_on:
+      - redis
+      - db
+
+  redis:
+    image: redis:latest
+    command: sysctl vm.overcommit_memory=1
+    ports:
+      - 6379:6379
 
   db:
     image: postgres:15
@@ -20,7 +74,7 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data/
     env_file:
-      - .env.dev
+      - .env_files/.env.dev
 
 volumes:
   pg_data:
