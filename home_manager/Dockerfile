@@ -28,7 +28,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends netcat
 COPY --from=builder /opt/venv /opt/venv
 COPY --from=builder /home_manager/manage.py /home_manager/manage.py
 COPY --from=builder /home_manager/entrypoint.sh /home_manager/entrypoint.sh
-COPY --from=builder /home_manager/app/ /home_manager/app/
+COPY --from=builder /home_manager/appl/ /home_manager/appl/
 COPY --from=builder /home_manager/home_manager/ /home_manager/home_manager/
 COPY --from=builder /home_manager/users/ /home_manager/users/
 COPY --from=builder /home_manager/media/ /home_manager/media/
