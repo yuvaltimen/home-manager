@@ -1,0 +1,18 @@
+{% extends "appl/base.html" %}
+
+{% block content %}
+<div class="content-section">
+    <form method="POST" id="groceryitem_delete_multi_form" action="{% url 'app_groceryitem_delete_all' %}">
+        {% csrf_token %}
+        <input type="hidden" name="item_ids" id="item_ids">
+        <button class="btn btn-outline-danger" type="submit">Yes, Delete All</button>
+    </form>
+    <a class="btn btn-outline-info" href=" {% url 'app_groceryitem_list' %}">
+        No, Cancel
+    </a>
+</div>
+{% endblock content %}
+
+
+
+

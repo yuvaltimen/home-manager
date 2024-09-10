@@ -77,7 +77,7 @@ CACHES = {
 
 
 INSTALLED_APPS = [
-    'app.apps.ShoppingListConfig',
+    'appl.apps.ShoppingListConfig',
     'users.apps.UsersConfig',
     'crispy_forms',
     'crispy_bootstrap5',
