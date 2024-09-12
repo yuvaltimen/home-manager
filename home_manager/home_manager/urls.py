@@ -10,6 +10,7 @@ from users import views as user_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('webpush/', include('webpush.urls')),
     path('jsi18n.js', JavaScriptCatalog.as_view(packages=['recurrence']), name='jsi18n'),
     path('register/', user_views.register, name='register'),
     path('profile/', user_views.profile, name='profile'),
@@ -27,7 +28,7 @@ urlpatterns = [
     path("password-reset-complete/",
          auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'),
          name="password_reset_complete"),
-    path('', include('app.urls')),
+    path('', include('appl.urls')),
 ]
 
 if settings.DEBUG:

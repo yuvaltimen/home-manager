@@ -57,8 +57,20 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 
 
 CACHE_MIDDLEWARE_ALIAS = 'default'
-CACHE_MIDDLEWARE_SECONDS = 6000
 CACHE_MIDDLEWARE_KEY_PREFIX = ''
+# Need to explicitly cache for explicit time
+CACHE_MIDDLEWARE_SECONDS = 0
+
+
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://127.0.0.1:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://127.0.0.1:6379/0")
+
+
+WEBPUSH_SETTINGS = {
+    "VAPID_PUBLIC_KEY": os.environ.get("VAPID_PUBLIC_APP_KEY"),
+    "VAPID_PRIVATE_KEY": os.environ.get("VAPID_PRIVATE_APP_KEY"),
+    "VAPID_ADMIN_EMAIL": f"mailto:{os.environ.get('EMAIL_USER')}"
+}
 
 CACHES = {
     "default": {
@@ -69,11 +81,12 @@ CACHES = {
 
 
 INSTALLED_APPS = [
-    'app.apps.ShoppingListConfig',
+    'appl.apps.ShoppingListConfig',
     'users.apps.UsersConfig',
     'crispy_forms',
     'crispy_bootstrap5',
     'recurrence',
+    'webpush',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

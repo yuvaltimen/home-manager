@@ -1,0 +1,45 @@
+{% extends "appl/base.html" %}
+{% load extra_tags %}
+
+{% block content %}
+<div class="content-section">
+    {% block page_title%}{% endblock %}
+    <div class="d-flex column">
+        <a class="btn btn-outline-info" href="{% url 'app_reminder_create' %}" >+ New</a>
+    </div>
+    </br>
+    <p class="text-muted">
+        You can filter by user by clicking on the username.
+    </p>
+    <ul class="list-group">
+        {% for object in object_list %}
+        <li class="list-group-item list-group-item-light">
+            <div class="d-flex justify-content-center">
+                <div>
+                    <h3><a class="article-title" href="{% url 'app_reminder_detail' object.id %}">{{ object.name }}</a></h3>
+                    <p class="text-muted">
+                        Added by
+                        <a href="{% url 'app_user_reminder_list' object.author %}"><b>{{ object.author }}</b></a>
+                        on {{ object.last_modified | date:"m/d/Y (H:i)" }}
+                    </p>
+                    {%if object.description %}
+                    <div class="content-section">
+                        <p>{{ object.description }}</p>
+                    </div>
+                    {% endif %}
+                    <p class="alert alert-info">
+                        {{ object | display_next_occurrence }}
+                    </p>
+                    <div class="d-flex align-items-center justify-content-center">
+                    <a class="btn btn-outline-info" href="{% url 'app_reminder_update' object.id %}">Edit</a>
+                    <a class="btn btn-outline-danger" href="{% url 'app_reminder_delete' object.id %}">
+                        Delete
+                    </a>
+                </div>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock content %}

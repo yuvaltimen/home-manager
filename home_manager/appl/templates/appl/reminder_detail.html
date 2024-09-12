@@ -1,0 +1,51 @@
+{% extends "appl/base.html" %}
+{% load extra_tags %}
+
+{% block content %}
+<div>
+    <h3>{{ object.name }}</h3>
+    <p class="text-muted">
+        Added by
+        <a href="{% url 'app_user_reminder_list' object.author %}"><b>{{ object.author }}</b></a>
+        on {{ object.last_modified | date:"m/d/Y (H:i)" }}
+    </p>
+    <p class="alert alert-info">
+        {{ object | display_next_occurrence }}
+    </p>
+    {% if object.schedule.rrules or object.schedule.rdates %}
+    <p>Occurs:</p>
+    <ul>
+        {% for inc_rule in object.schedule.rrules %}
+        <li><p class="text-muted">{{ inc_rule.to_text }} </p></li>
+        {% endfor %}
+
+        {% for inc_date in object.schedule.rdates %}
+        <li><p class="text-muted">On date: {{ inc_date }} </p></li>
+        {% endfor %}
+    </ul>
+    {% endif%}
+    {% if object.schedule.exrules or object.schedule.exdates %}
+    <p>Excluding:</p>
+    <ul>
+        {% for exc_rule in object.schedule.exrules %}
+        <li><p class="text-muted">{{ exc_rule.to_text }}</p></li>
+        {% endfor %}
+
+        {% for exc_date in object.schedule.exdates %}
+        <li><p class="text-muted">On date: {{ exc_date }} </p></li>
+        {% endfor %}
+    </ul>
+    {% endif%}
+    {%if object.description %}
+    <div class="content-section">
+        <p>{{ object.description }}</p>
+    </div>
+    {% endif %}
+    </br>
+    <div class="d-flex align-items-center justify-content-center">
+        <a class="btn btn-outline-info btn-sm mt-1 mb-1" href="{% url 'app_reminder_update' object.id %}">Update</a>
+        <a class="btn btn-outline-danger btn-sm mt-1 mb-1" href="{% url 'app_reminder_delete' object.id %}">Delete</a>
+    </div>
+</div>
+{% endblock content %}
+

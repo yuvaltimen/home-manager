@@ -2,7 +2,7 @@
 services:
 
   nginx:
-    build: ./nginx
+    build: ./compose/prod/nginx
     volumes:
       - static_volume:/home/django_app/web/staticfiles
       - media_volume:/home/django_app/web/media
@@ -13,18 +13,63 @@ services:
 
   web:
     build:
-      context: ./home_manager
-      dockerfile: Dockerfile.prod
-    command: gunicorn home_manager.wsgi:application --bind 0.0.0.0:8000 && python manage.py migrate --no-input && python manage.py collectstatic --no-input --clear
+      context: .
+      dockerfile: ./compose/prod/django/Dockerfile
+    image: django_home_manager_web_prod
+    command: /start
     volumes:
       - static_volume:/home/django_app/web/staticfiles
       - media_volume:/home/django_app/web/media
     depends_on:
       - db
+      - redis
     expose:
       - 8000
     env_file:
-      - .env.prod
+      - .env_files/.env.prod
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: ./compose/prod/django/Dockerfile
+    image: django_home_manager_celery_worker_prod
+    command: /start-celeryworker
+    env_file:
+      - .env_files/.env.prod
+    depends_on:
+      - redis
+      - db
+
+  celery_beat:
+    build:
+      context: .
+      dockerfile: ./compose/prod/django/Dockerfile
+    image: django_home_manager_celery_beat_prod
+    command: /start-celerybeat
+    env_file:
+      - .env_files/.env.prod
+    depends_on:
+      - redis
+      - db
+
+  flower:
+    build:
+      context: .
+      dockerfile: ./compose/prod/django/Dockerfile
+    image: django_home_manager_celery_flower_prod
+    command: /start-flower
+    env_file:
+      - .env_files/.env.prod
+    ports:
+      - 5557:5557
+    depends_on:
+      - redis
+      - db
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
 
   db:
     image: postgres:15
@@ -34,7 +79,7 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data/
     env_file:
-      - .env.prod
+      - .env_files/.env.prod
 
 volumes:
   pg_data:
