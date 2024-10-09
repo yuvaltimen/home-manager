@@ -21,7 +21,7 @@ WORKDIR /home_manager
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-COPY ./home_manager .
+COPY ./home_manager/ ./
 RUN pip install --upgrade pip  && pip install --no-cache-dir -Ur /home_manager/requirements.txt
 
 COPY ./compose/prod/django/entrypoint /entrypoint

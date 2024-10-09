@@ -55,14 +55,13 @@ services:
     env_file:
       - .env_files/.env.dev
     ports:
-      - 5557:5557
+      - 5555:5555
     depends_on:
       - redis
       - db
 
   redis:
-    image: redis:latest
-    command: sysctl vm.overcommit_memory=1
+    image: redis:7.4.0
     ports:
       - 6379:6379
 

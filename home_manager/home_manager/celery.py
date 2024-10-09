@@ -1,16 +1,13 @@
 import os
-from django.conf import settings
 from celery import Celery
+
 # from webpush import send_user_notification
 # from appl.models import User, Reminder
 # from appl.helper_functions import next_occurrence_in_timeframe
 # from datetime import datetime, timedelta
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'home_manager.settings')
 
-app = Celery('yummy_celery')
-app.config_from_object('django.conf:settings', namespace='CELERY')
-app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+app = Celery('yummy_celery', broker=os.environ.get('CELERY_BROKER'), backend=os.environ.get('CELERY_BACKEND'))
 
 
 # @app.task
@@ -21,6 +18,7 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 #         return
 #     print(f"Sending push to {usrname}!")
 #     send_user_notification(usr, payload=payload, ttl=100)
+
 
 @app.task
 def divide(x, y):
